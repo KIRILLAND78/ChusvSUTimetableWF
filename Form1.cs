@@ -67,6 +67,7 @@ namespace ChusvSUTimetableWF
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            MakeWin();
             this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
             Settings.Instance.Save();
         }
