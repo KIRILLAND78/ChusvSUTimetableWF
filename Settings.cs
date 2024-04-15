@@ -16,6 +16,7 @@ namespace ChusvSUTimetableWF
         {
             if (!File.Exists(path))
             {
+                Logging.Log("Settings file does not exist, creating one.");
                 File.WriteAllText(path, JsonSerializer.Serialize(this));
             }
             using (var jsonDocument = JsonDocument.Parse(File.ReadAllText(path)))
@@ -27,8 +28,12 @@ namespace ChusvSUTimetableWF
                     key = jsonDocument.RootElement.GetProperty("Key").GetString() ?? "";
                     session = jsonDocument.RootElement.GetProperty("Session").GetInt32();
                     group = jsonDocument.RootElement.GetProperty("Group").GetInt32();
+                    transparency = jsonDocument.RootElement.GetProperty("Transparency").GetInt32();
+                    draggable = jsonDocument.RootElement.GetProperty("Draggable").GetBoolean();
                 } catch (KeyNotFoundException ex) { //это нормально.
-                }
+                    Logging.Log("JSON seems to be malformed:");
+                    Logging.Log(ex);
+                } catch(Exception ex) { Logging.Log(ex);}
             }
 
         }
@@ -42,9 +47,14 @@ namespace ChusvSUTimetableWF
         private int session;
         public int Group { get { return group; } set { group = value; } }
         private int group;
+        public int Transparency { get { return transparency; } set { transparency = value; } }
+        private int transparency;
+        public bool Draggable { get { return draggable; } set { draggable = value; } }
+        private bool draggable = true;
         public void Save()
         {
             File.WriteAllText(path, JsonSerializer.Serialize(this));
+            Program.main.MakeWin();
         }
     }
 }

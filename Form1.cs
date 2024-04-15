@@ -6,20 +6,51 @@ namespace ChusvSUTimetableWF
 {
     public partial class Form1 : Form
     {
+        const uint LWA_ALPHA = 0x00000002;
+        const int GWL_EXSTYLE = -20;
+        const int WS_EX_LAYERED = 0x80000;
+        const int WS_EX_TRANSPARENT = 0x20;
         public bool init = false;
         Timer updateTimer;
+        //[DllImport("kernel32.dll")]
+        //public static extern uint GetLastError();
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         [DllImport("user32.dll", SetLastError = true)]
         static extern IntPtr FindWindowEx(IntPtr hP, IntPtr hC, string sC, string sW);
-
-        void MakeWin()
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+        [DllImport("user32.dll")]
+        static extern int SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        public void SetFormTransparent()
         {
+            Opacity = 0.1f;//я не знаю, оно не работает без этого!
+            var style = GetWindowLong(Handle, GWL_EXSTYLE);//я никогда не писал настолько страшный код
+            if (!Settings.Instance.Draggable)
+                style |= WS_EX_TRANSPARENT;
+            else style = ((style) & ~WS_EX_TRANSPARENT);
+            SetWindowLong(Handle, GWL_EXSTYLE, style | WS_EX_LAYERED);
+            //WS_EX_LAYERED для прозрачности
+            //WS_EX_TRANSPARENT для кликабельности сквозь окно
+            var h = (byte)(Settings.Instance.Transparency * 2.55);
+            SetLayeredWindowAttributes(Handle, 0, (byte)(Settings.Instance.Transparency*2.55), LWA_ALPHA);
+        }
+
+        public void SetFormNormal()
+        {
+            if (!Settings.Instance.Draggable) return;
+            var oldWindowLong = GetWindowLong(Handle, GWL_EXSTYLE);
+            SetWindowLong(Handle, GWL_EXSTYLE, Convert.ToInt32(WS_EX_LAYERED));
+        }
+        public void MakeWin()
+        {
+            SetFormTransparent();
             IntPtr nWinHandle = FindWindowEx(IntPtr.Zero, IntPtr.Zero, "Progman", null);
             nWinHandle = FindWindowEx(nWinHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
             SetParent(Handle, nWinHandle);
-            this.ShowInTaskbar = false;
         }
         public Form1()
         {
@@ -54,9 +85,12 @@ namespace ChusvSUTimetableWF
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        private const int HTTRANSPARENT = -1;
+        private const int WM_NCHITTEST = 0x84;
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if ((Settings.Instance.Draggable) && (e.Button == MouseButtons.Left))
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);

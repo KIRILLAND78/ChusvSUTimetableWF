@@ -30,10 +30,15 @@
         {
             label1 = new Label();
             label2 = new Label();
-            label3 = new Label();
+            subgroupLabel = new Label();
             button1 = new Button();
-            textBox1 = new TextBox();
+            subgroupTextBox = new TextBox();
             button3 = new Button();
+            transparencySlider = new TrackBar();
+            transparencySliderLabel = new Label();
+            label3 = new Label();
+            checkBox1 = new CheckBox();
+            ((System.ComponentModel.ISupportInitialize)transparencySlider).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -54,18 +59,18 @@
             label2.TabIndex = 1;
             label2.Text = "(Я серьезно, не ожидайте, что эта штука будет работать нормально)";
             // 
-            // label3
+            // subgroupLabel
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 87);
-            label3.Name = "label3";
-            label3.Size = new Size(85, 20);
-            label3.TabIndex = 2;
-            label3.Text = "Подгруппа";
+            subgroupLabel.AutoSize = true;
+            subgroupLabel.Location = new Point(12, 87);
+            subgroupLabel.Name = "subgroupLabel";
+            subgroupLabel.Size = new Size(85, 20);
+            subgroupLabel.TabIndex = 2;
+            subgroupLabel.Text = "Подгруппа";
             // 
             // button1
             // 
-            button1.Location = new Point(462, 134);
+            button1.Location = new Point(472, 231);
             button1.Name = "button1";
             button1.Size = new Size(94, 29);
             button1.TabIndex = 4;
@@ -73,16 +78,16 @@
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
-            // textBox1
+            // subgroupTextBox
             // 
-            textBox1.Location = new Point(134, 84);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(209, 27);
-            textBox1.TabIndex = 5;
+            subgroupTextBox.Location = new Point(134, 84);
+            subgroupTextBox.Name = "subgroupTextBox";
+            subgroupTextBox.Size = new Size(209, 27);
+            subgroupTextBox.TabIndex = 5;
             // 
             // button3
             // 
-            button3.Location = new Point(198, 134);
+            button3.Location = new Point(208, 231);
             button3.Name = "button3";
             button3.Size = new Size(258, 29);
             button3.TabIndex = 8;
@@ -90,20 +95,64 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
             // 
+            // transparencySlider
+            // 
+            transparencySlider.Location = new Point(134, 129);
+            transparencySlider.Minimum = 1;
+            transparencySlider.Name = "transparencySlider";
+            transparencySlider.Size = new Size(209, 56);
+            transparencySlider.SmallChange = 5;
+            transparencySlider.TabIndex = 9;
+            transparencySlider.Value = 10;
+            transparencySlider.Scroll += transparencySlider_Scroll;
+            // 
+            // transparencySliderLabel
+            // 
+            transparencySliderLabel.AutoSize = true;
+            transparencySliderLabel.Location = new Point(12, 129);
+            transparencySliderLabel.Name = "transparencySliderLabel";
+            transparencySliderLabel.Size = new Size(109, 20);
+            transparencySliderLabel.TabIndex = 10;
+            transparencySliderLabel.Text = "Прозрачность";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(12, 199);
+            label3.Name = "label3";
+            label3.Size = new Size(124, 20);
+            label3.TabIndex = 11;
+            label3.Text = "Перетаскивание";
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(146, 200);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(18, 17);
+            checkBox1.TabIndex = 12;
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(579, 173);
-            Controls.Add(button3);
-            Controls.Add(textBox1);
-            Controls.Add(button1);
+            ClientSize = new Size(579, 272);
+            Controls.Add(checkBox1);
             Controls.Add(label3);
+            Controls.Add(transparencySliderLabel);
+            Controls.Add(transparencySlider);
+            Controls.Add(button3);
+            Controls.Add(subgroupTextBox);
+            Controls.Add(button1);
+            Controls.Add(subgroupLabel);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "Form3";
             Text = "Настройки";
             Load += Form3_Load;
+            ((System.ComponentModel.ISupportInitialize)transparencySlider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -112,9 +161,13 @@
 
         private Label label1;
         private Label label2;
-        private Label label3;
+        private Label subgroupLabel;
         private Button button1;
-        private TextBox textBox1;
+        private TextBox subgroupTextBox;
         private Button button3;
+        private TrackBar transparencySlider;
+        private Label transparencySliderLabel;
+        private Label label3;
+        private CheckBox checkBox1;
     }
 }

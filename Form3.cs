@@ -21,24 +21,25 @@ namespace ChusvSUTimetableWF
         {
             try
             {
-                Settings.Instance.Group = int.Parse(textBox1.Text);
+                Settings.Instance.Group = int.Parse(subgroupTextBox.Text);
             }
             catch
             {
-                textBox1.Text = "недопустимый формат";
+                subgroupTextBox.Text = "Недопустимый формат";
             };
+            Settings.Instance.Transparency = transparencySlider.Value * 10;
+            Settings.Instance.Draggable = checkBox1.Checked;
+            Settings.Instance.Save();
             Program.Quack();
         }
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            textBox1.Text = $"{Settings.Instance.Group}";
+            transparencySlider.Value = Settings.Instance.Transparency/10;
+            subgroupTextBox.Text = $"{Settings.Instance.Group}";
+            checkBox1.Checked = Settings.Instance.Draggable;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Size = new Size(this.Size.Width, 843);
-        }
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -46,6 +47,15 @@ namespace ChusvSUTimetableWF
             Settings.Instance.Y = 5;
             Program.main.Location = new Point(5, 5);
             Settings.Instance.Save();
+        }
+
+        private void transparencySlider_Scroll(object sender, EventArgs e)
+        {
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            
         }
     }
 }
