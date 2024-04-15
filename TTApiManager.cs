@@ -15,18 +15,20 @@ namespace ChusvSUTimetableWF
     {
         public static TTApiManager Instance { get { if (_instance == null) _instance = new(); return _instance; } }
         static TTApiManager? _instance;
-        public string State { get { return _state; } set { _state = value; StateChanged?.Invoke(value, strings); } }
-        public delegate void StateHandler(string message, string[] strings);
+        public string State { get { return _state; } set { _state = value; StateChanged?.Invoke(value, strings, additionalData); } }
+        public delegate void StateHandler(string message, string[] strings, string[] additionalData);
         public event StateHandler StateChanged;
         private string _state = "Loading";
         public DateTime lastUpdate = DateTime.MinValue;
         public string[] strings;
+        public string[] additionalData;
         private string token { get { return $"{Settings.Instance.Session}:{TokenStore.Instance.Token}"; } }
         public TTApiManager()
         {
             strings = new string[9];
+            additionalData = new string[9];
             if ((Settings.Instance.Key.Length == 0) ||
-                (Settings.Instance.Session == 0) ||
+                (Settings.Instance.Session == 0) || (!File.Exists("tk.dat")) ||
                 (new FileInfo("tk.dat").Length == 0)) State = "Not logged";
             else State = "Logged";
         }
@@ -45,6 +47,9 @@ namespace ChusvSUTimetableWF
         public void Logout()
         {
             strings = new string[9];
+            additionalData = new string[9];
+            for (int i = 0; i < 9; i++) strings[i] = "-";
+            for (int i = 0; i < 9; i++) additionalData[i] = "-";
             Settings.Instance.Session = 0;
             Settings.Instance.Key = "";
             State = "Not logged";
@@ -53,6 +58,7 @@ namespace ChusvSUTimetableWF
         {
             if (lastUpdate > DateTime.Now.AddMinutes(-30)) return;
             for (int i = 0; i < 9; i++) strings[i] = "-";
+            for (int i = 0; i < 9; i++) additionalData[i] = "-";
             using (var client = new HttpClient())
             {
                 using (var request = new HttpRequestMessage(HttpMethod.Get, new Uri("https://online.chuvsu.ru/api/v2/schedule/tomorrow")))
@@ -74,8 +80,9 @@ namespace ChusvSUTimetableWF
                             {
                                 var sb = les.GetProperty("subgroup").GetInt32();
                                     if ((Settings.Instance.Group!=0) && (!((sb == 0) || (sb == Settings.Instance.Group)))) continue;
-                                //if (les.GetProperty("subgroup").GetInt32()<=1)
-                                strings[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("discipline")}({les.GetProperty("type").GetProperty("short")}) {les.GetProperty("cabinet").GetProperty("name").GetString()},  {les.GetProperty("start_time").GetString()} - {les.GetProperty("end_time").GetString()}";
+                                    //if (les.GetProperty("subgroup").GetInt32()<=1)
+                                    strings[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("discipline")}";
+                                    additionalData[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("start_time").GetString()} - {les.GetProperty("end_time").GetString()}   {les.GetProperty("cabinet").GetProperty("name").GetString()}   {les.GetProperty("type").GetProperty("short")}";
                             }
                         }
                         State = "Nominal";

@@ -14,21 +14,17 @@ namespace ChusvSUTimetableWF
         public static void Log(string text)
         {
 
-            if (!File.Exists(path))
-            {
-                File.AppendAllText(path, $"{DateTime.Now}: {text}");
-            }
+            File.AppendAllText(path, $"\r\n{DateTime.Now}: {text}");
         }
         public static void Log(Exception ex)
         {
 
-            if (!File.Exists(path))
-            {
-                File.AppendAllText(path, $"{DateTime.Now}: Exception Caught:");
-                File.AppendAllText(path, ex.Message);
-                File.AppendAllText(path, ex.Source);
-                File.AppendAllText(path, ex.StackTrace);
-            }
+            File.AppendAllText(path, $"\r\n{DateTime.Now}: Exception Caught:\r\n");
+            File.AppendAllText(path, ex.Message);
+            File.AppendAllText(path, "\r\n");
+            File.AppendAllText(path, ex.Source);
+            File.AppendAllText(path, "\r\n");
+            File.AppendAllText(path, ex.StackTrace);
         }
     }
 }

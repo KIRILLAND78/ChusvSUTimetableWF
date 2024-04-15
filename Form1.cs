@@ -63,18 +63,33 @@ namespace ChusvSUTimetableWF
             init = true;
         }
 
-        private void Instance_StateChanged(string message, string[] strings)
+        private void Instance_StateChanged(string message, string[] strings, string[] additionalData)
         {
             label10.Text = message;
-            label1.Text = strings[0];
-            label2.Text = strings[1];
-            label3.Text = strings[2];
-            label4.Text = strings[3];
-            label5.Text = strings[4];
-            label6.Text = strings[5];
-            label7.Text = strings[6];
-            label8.Text = strings[7];
-            label9.Text = strings[8];
+            Label[] labels = new Label[5] { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
+            Label[] subLabels = new Label[5] { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
+            for (int i=0; i<5; i++)
+            {
+                labels[i].Text = "-";
+                subLabels[i].Text = "-";
+            }
+            var lab = 0;
+            addText.Visible = false;
+            for (int i=0; i<9; i++)
+            {
+                if (strings[i] != "-")
+                {
+                    labels[lab].Text = strings[i];
+                    subLabels[lab].Text = additionalData[i];
+                    lab++;
+                    if (lab >= 5)
+                    {
+                        addText.Visible = true;
+                        break;
+                    }
+                }
+            }
+            //CTextB1.Text = strings[0];
         }
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -98,9 +113,14 @@ namespace ChusvSUTimetableWF
             }
             base.OnMouseMove(e);
         }
-
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            //еы╗ анкэье йняршкеи б йнде!
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            this.BackColor = Color.Transparent;
             MakeWin();
             this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
             Settings.Instance.Save();
