@@ -35,7 +35,7 @@ namespace ChusvSUTimetableWF
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            transparencySlider.Value = Settings.Instance.Transparency/10;
+            transparencySlider.Value = Settings.Instance.Transparency / 10;
             subgroupTextBox.Text = $"{Settings.Instance.Group}";
             checkBox1.Checked = Settings.Instance.Draggable;
         }
@@ -55,7 +55,12 @@ namespace ChusvSUTimetableWF
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void Credits_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Код виджета: Казаков Кирилл Валерьевич, КТ-31-21\r\nAPI расписания (Мой ЧувГУ): Петрянкин Даниил Евгеньевич, КТ-31-21\r\nДизайн:Гаврилов Александр Сергеевич, КТ-42-20");
         }
     }
 }

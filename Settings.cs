@@ -54,6 +54,7 @@ namespace ChusvSUTimetableWF
         public void Save()
         {
             File.WriteAllText(path, JsonSerializer.Serialize(this));
+            TTApiManager.Instance.UpdateData();
             Program.main.MakeWin();
         }
     }

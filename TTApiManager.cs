@@ -71,6 +71,7 @@ namespace ChusvSUTimetableWF
                         var res = client.SendAsync(request).GetAwaiter().GetResult();
                         res.EnsureSuccessStatusCode();
                         var json = res.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                        File.WriteAllText("result.json", json);
                         var g = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 50 });
                         var itemsVK = g.RootElement.GetProperty("items");
                         if (itemsVK.ToString()!="[]")

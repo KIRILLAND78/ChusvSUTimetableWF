@@ -25,6 +25,10 @@ namespace ChusvSUTimetableWF
         static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
         [DllImport("user32.dll")]
         static extern int SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
         public void SetFormTransparent()
         {
             Opacity = 0.1f;//я не знаю, оно не работает без этого!
@@ -57,10 +61,16 @@ namespace ChusvSUTimetableWF
             MakeWin();
             updateTimer = new Timer();
             updateTimer.Interval = 1000 * 60;
+            updateTimer.Tick += UpdateTimer_Tick;
             InitializeComponent();
             TTApiManager.Instance.StateChanged += Instance_StateChanged;
             TTApiManager.Instance.LoginCallInput();
             init = true;
+        }
+
+        private void UpdateTimer_Tick(object? sender, EventArgs e)
+        {
+            TTApiManager.Instance.UpdateData();
         }
 
         private void Instance_StateChanged(string message, string[] strings, string[] additionalData)
@@ -94,14 +104,6 @@ namespace ChusvSUTimetableWF
 
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
-
-        [DllImport("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        private const int HTTRANSPARENT = -1;
-        private const int WM_NCHITTEST = 0x84;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
