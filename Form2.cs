@@ -18,16 +18,6 @@ namespace ChusvSUTimetableWF
             InitializeComponent();
         }
 
-        private void button1_MouseEnter(object sender, EventArgs e)
-        {
-            loginButton.Text = "Да, я хочу отдать свои данные кибермошеннику";
-        }
-
-        private void button1_MouseHover(object sender, EventArgs e)
-        {
-
-            loginButton.Text = "Войти";
-        }
         private void button1_Click(object sender, EventArgs e)
         {
             TTApiManager.Instance.Login(loginTextBox.Text, passwordTextBox.Text);

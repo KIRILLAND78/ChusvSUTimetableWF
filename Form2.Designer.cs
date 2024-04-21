@@ -47,8 +47,6 @@
             loginButton.Text = "Войти";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += button1_Click;
-            loginButton.MouseEnter += button1_MouseEnter;
-            loginButton.MouseLeave += button1_MouseHover;
             // 
             // loginLabel
             // 
