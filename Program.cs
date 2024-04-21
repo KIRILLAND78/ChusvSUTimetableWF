@@ -12,7 +12,7 @@ namespace ChusvSUTimetableWF
         {
             using (System.Media.SoundPlayer player = new System.Media.SoundPlayer())
             {
-                player.SoundLocation = "quack.wav";
+                player.SoundLocation = $"{System.AppDomain.CurrentDomain.BaseDirectory}quack.wav";
                 player.Play();
             }
         }
