@@ -62,6 +62,7 @@ namespace ChusvSUTimetableWF
             if (win == null || win.IsDisposed)
             {
                 win = new T();
+                if (win is Form1) main = win as Form1;
             }
             if (win.Visible)
             {
