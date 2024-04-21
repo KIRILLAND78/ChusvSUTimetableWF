@@ -7,6 +7,7 @@ namespace ChusvSUTimetableWF
     public partial class Form1 : Form
     {
         const uint LWA_ALPHA = 0x00000002;
+        const uint LWA_COLORKEY = 0x00000001;
         const int GWL_EXSTYLE = -20;
         const int WS_EX_LAYERED = 0x80000;
         const int WS_EX_TRANSPARENT = 0x20;
@@ -40,7 +41,8 @@ namespace ChusvSUTimetableWF
             //WS_EX_LAYERED для прозрачности
             //WS_EX_TRANSPARENT для кликабельности сквозь окно
             var h = (byte)(Settings.Instance.Transparency * 2.55);
-            SetLayeredWindowAttributes(Handle, 0, (byte)(Settings.Instance.Transparency*2.55), LWA_ALPHA);
+            //var hh = ((uint)Color.Red);
+            SetLayeredWindowAttributes(Handle, 0xFF0000, (byte)(Settings.Instance.Transparency*2.55), LWA_ALPHA | LWA_COLORKEY);
         }
 
         public void SetFormNormal()
@@ -56,16 +58,38 @@ namespace ChusvSUTimetableWF
             nWinHandle = FindWindowEx(nWinHandle, IntPtr.Zero, "SHELLDLL_DefView", null);
             SetParent(Handle, nWinHandle);
         }
+
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,     // x-coordinate of upper-left corner
+            int nTopRect,      // y-coordinate of upper-left corner
+            int nRightRect,    // x-coordinate of lower-right corner
+            int nBottomRect,   // y-coordinate of lower-right corner
+            int nWidthEllipse, // width of ellipse
+            int nHeightEllipse // height of ellipse
+        );
+
         public Form1()
         {
             MakeWin();
             updateTimer = new Timer();
-            updateTimer.Interval = 1000 * 60;
+            updateTimer.Interval = 1000 * 30;//каждые 30 секунд
             updateTimer.Tick += UpdateTimer_Tick;
             InitializeComponent();
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             TTApiManager.Instance.StateChanged += Instance_StateChanged;
             TTApiManager.Instance.LoginCallInput();
             init = true;
+            Label[] labels = { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
+            Label[] subLabels = { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
+            for (int i = 0; i < 5; i++)
+            {
+                labels[i].Text = "-";
+                subLabels[i].Text = "-";
+            }
+            addText.Visible = false;
         }
 
         private void UpdateTimer_Tick(object? sender, EventArgs e)
@@ -76,8 +100,8 @@ namespace ChusvSUTimetableWF
         private void Instance_StateChanged(string message, string[] strings, string[] additionalData)
         {
             label10.Text = message;
-            Label[] labels = new Label[5] { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
-            Label[] subLabels = new Label[5] { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
+            Label[] labels = { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
+            Label[] subLabels = { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
             for (int i=0; i<5; i++)
             {
                 labels[i].Text = "-";
@@ -92,7 +116,7 @@ namespace ChusvSUTimetableWF
                     labels[lab].Text = strings[i];
                     subLabels[lab].Text = additionalData[i];
                     lab++;
-                    if (lab >= 5)
+                    if (lab >= 6)
                     {
                         addText.Visible = true;
                         break;
@@ -115,14 +139,8 @@ namespace ChusvSUTimetableWF
             }
             base.OnMouseMove(e);
         }
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            //ЕЩЁ БОЛЬШЕ КОСТЫЛЕЙ В КОДЕ!
-        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            this.BackColor = Color.Transparent;
             MakeWin();
             this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
             Settings.Instance.Save();

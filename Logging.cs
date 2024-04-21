@@ -10,21 +10,25 @@ namespace ChusvSUTimetableWF
 {
     internal static class Logging
     {
-        const string path = "log.txt";
+        private static string Path => $"{Settings.Folder}/log.txt";
+        static Logging()
+        {
+            Directory.CreateDirectory(Settings.Folder);
+        }
         public static void Log(string text)
         {
 
-            File.AppendAllText(path, $"\r\n{DateTime.Now}: {text}");
+            File.AppendAllText(Path, $"\r\n{DateTime.Now}: {text}");
         }
         public static void Log(Exception ex)
         {
 
-            File.AppendAllText(path, $"\r\n{DateTime.Now}: Exception Caught:\r\n");
-            File.AppendAllText(path, ex.Message);
-            File.AppendAllText(path, "\r\n");
-            File.AppendAllText(path, ex.Source);
-            File.AppendAllText(path, "\r\n");
-            File.AppendAllText(path, ex.StackTrace);
+            File.AppendAllText(Path, $"\r\n{DateTime.Now}: Exception Caught:\r\n");
+            File.AppendAllText(Path, ex.Message);
+            File.AppendAllText(Path, "\r\n");
+            File.AppendAllText(Path, ex.Source);
+            File.AppendAllText(Path, "\r\n");
+            File.AppendAllText(Path, ex.StackTrace);
         }
     }
 }

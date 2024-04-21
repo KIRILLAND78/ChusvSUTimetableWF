@@ -15,22 +15,23 @@ namespace ChusvSUTimetableWF
     {
         public static TokenStore Instance {  get { if (_instance == null) _instance = new(); return _instance; } }
         static TokenStore? _instance;
-        private const string path= "tk.dat";
+        public static string Path => $"{Settings.Folder}/tk.dat";
         public TokenStore()
         {
-            if (!File.Exists(path))
+            if (!Directory.Exists(Settings.Folder))
+                Directory.CreateDirectory(Settings.Folder);
+            if (!File.Exists(Path))
             {
-                //File.Create(path);
-                File.WriteAllText(path, JsonSerializer.Serialize(this));
+                File.WriteAllText(Path, JsonSerializer.Serialize(this));
             }
         }
         public string Token {
             get
             {
                 if (Settings.Instance.Key.Length == 0) return "";
-                FileStream fStream = new FileStream(path, FileMode.OpenOrCreate);
+                FileStream fStream = new FileStream(Path, FileMode.OpenOrCreate);
 
-                long len = new FileInfo(path).Length;
+                long len = new FileInfo(Path).Length;
                 byte[] inBuffer = new byte[len];
                 fStream.Read(inBuffer, 0, (int)len);
                 var key = Encoding.Unicode.GetBytes(Settings.Instance.Key);
@@ -41,7 +42,7 @@ namespace ChusvSUTimetableWF
             }
             set
             {
-                FileStream fStream = new FileStream(path, FileMode.OpenOrCreate);
+                FileStream fStream = new FileStream(Path, FileMode.OpenOrCreate);
                 byte[] toEncrypt = Encoding.ASCII.GetBytes(value);
                 if (toEncrypt.Length <= 0)
                     throw new ArgumentException("The buffer length was 0.", nameof(Buffer));

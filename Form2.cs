@@ -28,7 +28,6 @@ namespace ChusvSUTimetableWF
 
             loginButton.Text = "Войти";
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             TTApiManager.Instance.Login(loginTextBox.Text, passwordTextBox.Text);

@@ -11,15 +11,18 @@ namespace ChusvSUTimetableWF
     {
         public static Settings Instance {  get { if (_instance == null) _instance = new(); return _instance; } }
         static Settings? _instance;
-        private const string path= "st.json";
+        public static string Folder => $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/TimetableWidget/";
+        private static string Path => $"{Folder}/st.json";
         public Settings()
         {
-            if (!File.Exists(path))
+            if (!Directory.Exists(Folder))
+                Directory.CreateDirectory(Folder);
+            if (!File.Exists(Path))
             {
                 Logging.Log("Settings file does not exist, creating one.");
-                File.WriteAllText(path, JsonSerializer.Serialize(this));
+                File.WriteAllText(Path, JsonSerializer.Serialize(this));
             }
-            using (var jsonDocument = JsonDocument.Parse(File.ReadAllText(path)))
+            using (var jsonDocument = JsonDocument.Parse(File.ReadAllText(Path)))
             {
                 try
                 {
@@ -48,12 +51,13 @@ namespace ChusvSUTimetableWF
         public int Group { get { return group; } set { group = value; } }
         private int group;
         public int Transparency { get { return transparency; } set { transparency = value; } }
-        private int transparency;
+        private int transparency = 100;
         public bool Draggable { get { return draggable; } set { draggable = value; } }
         private bool draggable = true;
         public void Save()
         {
-            File.WriteAllText(path, JsonSerializer.Serialize(this));
+            File.WriteAllText(Path, JsonSerializer.Serialize(this));
+            TTApiManager.Instance.lastUpdate = DateTime.Now.AddMinutes(-1);
             TTApiManager.Instance.UpdateData();
             Program.main.MakeWin();
         }

@@ -22,14 +22,15 @@ namespace ChusvSUTimetableWF
         public DateTime lastUpdate = DateTime.MinValue;
         public string[] strings;
         public string[] additionalData;
+        private static string Path => $"{Settings.Folder}/result.json";
         private string token { get { return $"{Settings.Instance.Session}:{TokenStore.Instance.Token}"; } }
         public TTApiManager()
         {
             strings = new string[9];
             additionalData = new string[9];
             if ((Settings.Instance.Key.Length == 0) ||
-                (Settings.Instance.Session == 0) || (!File.Exists("tk.dat")) ||
-                (new FileInfo("tk.dat").Length == 0)) State = "Not logged";
+                (Settings.Instance.Session == 0) || (!File.Exists(TokenStore.Path)) ||
+                (new FileInfo(TokenStore.Path).Length == 0)) State = "Not logged";
             else State = "Logged";
         }
         public void LoginCallInput()
@@ -52,6 +53,7 @@ namespace ChusvSUTimetableWF
             for (int i = 0; i < 9; i++) additionalData[i] = "-";
             Settings.Instance.Session = 0;
             Settings.Instance.Key = "";
+            Settings.Instance.Save();
             State = "Not logged";
         }
         public void UpdateData()
@@ -67,11 +69,11 @@ namespace ChusvSUTimetableWF
                     {
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", $"{Settings.Instance.Session}:{TokenStore.Instance.Token}");
+                        request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", token);
                         var res = client.SendAsync(request).GetAwaiter().GetResult();
                         res.EnsureSuccessStatusCode();
                         var json = res.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                        File.WriteAllText("result.json", json);
+                        File.WriteAllText(Path, json);
                         var g = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 50 });
                         var itemsVK = g.RootElement.GetProperty("items");
                         if (itemsVK.ToString()!="[]")
@@ -143,6 +145,7 @@ namespace ChusvSUTimetableWF
                     }
                 }
             }
+            lastUpdate = DateTime.MinValue;
             UpdateData();
         }
     }

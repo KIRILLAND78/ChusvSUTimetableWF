@@ -49,7 +49,7 @@
             // CTextB1
             // 
             CTextB1.BackColor = Color.White;
-            CTextB1.Font = new Font("Ubuntu", 13F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CTextB1.Font = new Font("Ubuntu", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             CTextB1.Location = new Point(9, 65);
             CTextB1.Name = "CTextB1";
             CTextB1.Size = new Size(342, 20);
@@ -72,6 +72,7 @@
             // 
             // ctPictureBox1
             // 
+            ctPictureBox1.BackColor = Color.Transparent;
             ctPictureBox1.Image = (Image)resources.GetObject("ctPictureBox1.Image");
             ctPictureBox1.Location = new Point(0, 0);
             ctPictureBox1.Margin = new Padding(0);
@@ -116,7 +117,7 @@
             // CTextB2
             // 
             CTextB2.BackColor = Color.White;
-            CTextB2.Font = new Font("Ubuntu", 13F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CTextB2.Font = new Font("Ubuntu", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             CTextB2.Location = new Point(9, 116);
             CTextB2.Name = "CTextB2";
             CTextB2.Size = new Size(342, 20);
@@ -127,7 +128,7 @@
             // CTextB3
             // 
             CTextB3.BackColor = Color.White;
-            CTextB3.Font = new Font("Ubuntu", 13F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CTextB3.Font = new Font("Ubuntu", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             CTextB3.Location = new Point(9, 167);
             CTextB3.Name = "CTextB3";
             CTextB3.Size = new Size(342, 20);
@@ -148,7 +149,7 @@
             // CTextB4
             // 
             CTextB4.BackColor = Color.White;
-            CTextB4.Font = new Font("Ubuntu", 13F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CTextB4.Font = new Font("Ubuntu", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             CTextB4.Location = new Point(9, 218);
             CTextB4.Name = "CTextB4";
             CTextB4.Size = new Size(342, 20);
@@ -169,7 +170,7 @@
             // CTextB5
             // 
             CTextB5.BackColor = Color.White;
-            CTextB5.Font = new Font("Ubuntu", 13F, FontStyle.Regular, GraphicsUnit.Pixel);
+            CTextB5.Font = new Font("Ubuntu", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
             CTextB5.Location = new Point(9, 269);
             CTextB5.Name = "CTextB5";
             CTextB5.Size = new Size(342, 20);
@@ -202,6 +203,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.Red;
             ClientSize = new Size(360, 348);
             ControlBox = false;
             Controls.Add(addText);
@@ -221,6 +223,7 @@
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
             Text = "Form1";
+            TransparencyKey = Color.Red;
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)ctPictureBox1).EndInit();
             ResumeLayout(false);
