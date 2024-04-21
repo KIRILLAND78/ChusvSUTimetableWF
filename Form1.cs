@@ -32,7 +32,7 @@ namespace ChusvSUTimetableWF
         public static extern bool ReleaseCapture();
         public void SetFormTransparent()
         {
-            Opacity = 0.1f;//я не знаю, оно не работает без этого!
+            Opacity = ((double)Settings.Instance.Transparency)/100;//я не знаю, оно не работает без этого!
             var style = GetWindowLong(Handle, GWL_EXSTYLE);//я никогда не писал настолько страшный код
             if (!Settings.Instance.Draggable)
                 style |= WS_EX_TRANSPARENT;
@@ -40,9 +40,6 @@ namespace ChusvSUTimetableWF
             SetWindowLong(Handle, GWL_EXSTYLE, style | WS_EX_LAYERED);
             //WS_EX_LAYERED для прозрачности
             //WS_EX_TRANSPARENT для кликабельности сквозь окно
-            var h = (byte)(Settings.Instance.Transparency * 2.55);
-            //var hh = ((uint)Color.Red);
-            SetLayeredWindowAttributes(Handle, 0xFF0000, (byte)(Settings.Instance.Transparency*2.55), LWA_ALPHA | LWA_COLORKEY);
         }
 
         public void SetFormNormal()
@@ -146,6 +143,12 @@ namespace ChusvSUTimetableWF
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                this.Close();
+                this.Dispose();
+                Program.main = new Form1();
+                Program.main.Show();
+                Program.main.TopMost = true;
+                Program.main.TopMost = false;
                 return;
             }
             base.OnMouseMove(e);

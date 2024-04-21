@@ -59,7 +59,7 @@ namespace ChusvSUTimetableWF
         }
         private static void ShowWindow<T>(T win) where T : Form, new()
         {
-            if (win == null)
+            if (win == null || win.IsDisposed)
             {
                 win = new T();
             }

@@ -61,7 +61,7 @@ namespace ChusvSUTimetableWF
         }
         public void UpdateData()
         {
-            if (lastUpdate > DateTime.Now.AddMinutes(-30)) return;
+            if (lastUpdate > DateTime.Now.AddMinutes(-30)) { State = State; return; }
             for (int i = 0; i < 9; i++) strings[i] = "-";
             for (int i = 0; i < 9; i++) additionalData[i] = "-";
             using (var client = new HttpClient())
