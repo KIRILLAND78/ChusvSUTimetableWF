@@ -77,11 +77,6 @@ namespace ChusvSUTimetableWF
             updateTimer.Interval = 1000 * 30;//каждые 30 секунд
             updateTimer.Tick += UpdateTimer_Tick;
             InitializeComponent();
-            this.FormBorderStyle = FormBorderStyle.None;
-            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            TTApiManager.Instance.StateChanged += Instance_StateChanged;
-            TTApiManager.Instance.LoginCallInput();
-            init = true;
             Label[] labels = { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
             Label[] subLabels = { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
             for (int i = 0; i < 5; i++)
@@ -90,6 +85,12 @@ namespace ChusvSUTimetableWF
                 subLabels[i].Text = "-";
             }
             addText.Visible = false;
+            this.FormBorderStyle = FormBorderStyle.None;
+            Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
+            TTApiManager.Instance.StateChanged += Instance_StateChanged;
+            TTApiManager.Instance.LoginCallInput();
+            init = true;
+
         }
 
         private void UpdateTimer_Tick(object? sender, EventArgs e)
