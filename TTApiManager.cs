@@ -15,7 +15,10 @@ namespace ChusvSUTimetableWF
     {
         public static TTApiManager Instance { get { if (_instance == null) _instance = new(); return _instance; } }
         static TTApiManager? _instance;
-        public string State { get { return _state; } set { _state = value; StateChanged?.Invoke(value, strings, additionalData); } }
+        public string State { get { return _state; } set {
+                _state = value;
+                StateChanged?.Invoke(value, strings, additionalData);
+            } }
         public delegate void StateHandler(string message, string[] strings, string[] additionalData);
         public event StateHandler StateChanged;
         private string _state = "Loading";

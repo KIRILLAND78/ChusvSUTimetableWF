@@ -87,10 +87,20 @@ namespace ChusvSUTimetableWF
             addText.Visible = false;
             this.FormBorderStyle = FormBorderStyle.None;
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
-            TTApiManager.Instance.StateChanged += Instance_StateChanged;
-            TTApiManager.Instance.LoginCallInput();
+            TTApiManager.Instance.StateChanged += Instance_StateChanged; 
+            var loginTimer = new Timer();
+            loginTimer.Interval = 1;//я знаю, я знаю, выглядит ужасно, но это работает. черная магия, никак иначе
+            loginTimer.Tick += LoginTimer_Tick;
+            loginTimer.Start();
+            this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
             init = true;
+        }
 
+        private void LoginTimer_Tick(object? sender, EventArgs e)
+        {
+            TTApiManager.Instance.LoginCallInput();
+            ((Timer)sender).Stop();
+            ((Timer)sender).Dispose();
         }
 
         private void UpdateTimer_Tick(object? sender, EventArgs e)
@@ -142,9 +152,7 @@ namespace ChusvSUTimetableWF
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            MakeWin();
-            this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
-            Settings.Instance.Save();
+            SetFormTransparent();//оно сбрасывает прозрачность почему-то, эта штука здесь нужна
         }
         protected override void OnLocationChanged(EventArgs e)
         {

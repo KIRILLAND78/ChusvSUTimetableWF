@@ -222,6 +222,7 @@
             Controls.Add(ctPictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Form1";
+            StartPosition = FormStartPosition.Manual;
             Text = "Form1";
             TransparencyKey = Color.Red;
             Load += Form1_Load;
