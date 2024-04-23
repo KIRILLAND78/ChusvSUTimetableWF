@@ -119,7 +119,7 @@ namespace ChusvSUTimetableWF
             addText.Visible = false;
             for (int i=0; i<9; i++)
             {
-                if (strings[i] != "-")
+                if (strings[i] != "-" && strings[i]!=null)
                 {
                     labels[lab].Text = strings[i];
                     subLabels[lab].Text = additionalData[i];
@@ -143,12 +143,12 @@ namespace ChusvSUTimetableWF
             {
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-                this.Close();
-                this.Dispose();
-                Program.main = new Form1();
-                Program.main.Show();
-                Program.main.TopMost = true;
-                Program.main.TopMost = false;
+                //this.Close();
+                //this.Dispose();
+                //Program.main = new Form1();
+                //Program.main.Show();
+                //Program.main.TopMost = true;
+                //Program.main.TopMost = false;
                 return;
             }
             base.OnMouseMove(e);
