@@ -48,7 +48,7 @@
             label1.Name = "label1";
             label1.Size = new Size(343, 20);
             label1.TabIndex = 0;
-            label1.Text = "Прототип виджета расписания ЧГУ, Итерация 3";
+            label1.Text = "Прототип виджета расписания ЧГУ, Итерация 4";
             // 
             // subgroupLabel
             // 
