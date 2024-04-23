@@ -92,7 +92,6 @@
             transparencySlider.Minimum = 1;
             transparencySlider.Name = "transparencySlider";
             transparencySlider.Size = new Size(209, 56);
-            transparencySlider.SmallChange = 5;
             transparencySlider.TabIndex = 9;
             transparencySlider.Value = 10;
             transparencySlider.Scroll += transparencySlider_Scroll;
