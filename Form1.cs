@@ -73,6 +73,7 @@ namespace ChusvSUTimetableWF
             updateTimer = new Timer();
             updateTimer.Interval = 1000 * 5;//каждые 5 секунд
             updateTimer.Tick += UpdateTimer_Tick;
+            updateTimer.Start();
             InitializeComponent();
             Label[] labels = { CTextB1, CTextB2, CTextB3, CTextB4, CTextB5 };
             Label[] subLabels = { CTextS1, CTextS2, CTextS3, CTextS4, CTextS5 };
