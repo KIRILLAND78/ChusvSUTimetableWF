@@ -19,6 +19,13 @@ namespace ChusvSUTimetableWF
                 _state = value;
                 StateChanged?.Invoke(value, strings, additionalData);
             } }
+        bool isToday = false;
+        public string DayName { get { if (lastUpdate == DateTime.MinValue) return "Загрузка..."; if (isToday) return $"сегодня, {WeekDayName}"; return $"завтра, {WeekDayName}"; } }
+        public string WeekDayName { get { if (lastUpdate == DateTime.MinValue) return "...";
+                var forDate = DateTime.Now;
+                if (!isToday) forDate = forDate.AddDays(1);
+                return (new string[7]{"Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"})[(int)forDate.DayOfWeek];
+            } }
         public delegate void StateHandler(string message, string[] strings, string[] additionalData);
         public event StateHandler StateChanged;
         private string _state = "Loading";
@@ -91,8 +98,8 @@ namespace ChusvSUTimetableWF
                                     additionalData[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("start_time").GetString()} - {les.GetProperty("end_time").GetString()}   {les.GetProperty("cabinet").GetProperty("name").GetString()}   {les.GetProperty("type").GetProperty("short")}";
                             }
                         }
-                        State = "Nominal";
                         lastUpdate = DateTime.Now;
+                        State = "Nominal";
                     }
                     catch (Exception ex)
                     {

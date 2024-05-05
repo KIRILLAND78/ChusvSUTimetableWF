@@ -118,6 +118,7 @@ namespace ChusvSUTimetableWF
             }
             var lab = 0;
             addText.Visible = false;
+            headerLabel.Text = $"Расписание на {TTApiManager.Instance.DayName}";
             for (int i=0; i<9; i++)
             {
                 if (strings[i] != "-" && strings[i]!=null)

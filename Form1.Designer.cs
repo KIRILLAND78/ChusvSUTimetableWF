@@ -32,7 +32,7 @@
             CTextB1 = new CTLabel();
             label10 = new CTLabel();
             ctPictureBox1 = new CTPictureBox();
-            ctLabel1 = new CTLabel();
+            headerLabel = new CTLabel();
             CTextS1 = new CTLabel();
             CTextS2 = new CTLabel();
             CTextB2 = new CTLabel();
@@ -82,17 +82,17 @@
             ctPictureBox1.TabIndex = 10;
             ctPictureBox1.TabStop = false;
             // 
-            // ctLabel1
+            // headerLabel
             // 
-            ctLabel1.BackColor = Color.FromArgb(243, 246, 249);
-            ctLabel1.Font = new Font("Inter ExtraBold", 10F, FontStyle.Bold);
-            ctLabel1.ForeColor = Color.Black;
-            ctLabel1.Location = new Point(2, 7);
-            ctLabel1.Name = "ctLabel1";
-            ctLabel1.Size = new Size(304, 39);
-            ctLabel1.TabIndex = 11;
-            ctLabel1.Text = "Расписание на завтра, вторник";
-            ctLabel1.TextAlign = ContentAlignment.MiddleLeft;
+            headerLabel.BackColor = Color.FromArgb(243, 246, 249);
+            headerLabel.Font = new Font("Inter SemiBold", 9.2F, FontStyle.Bold);
+            headerLabel.ForeColor = Color.Black;
+            headerLabel.Location = new Point(2, 7);
+            headerLabel.Name = "headerLabel";
+            headerLabel.Size = new Size(314, 39);
+            headerLabel.TabIndex = 11;
+            headerLabel.Text = "Расписание на Загрузка...";
+            headerLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // CTextS1
             // 
@@ -216,7 +216,7 @@
             Controls.Add(CTextB2);
             Controls.Add(CTextS2);
             Controls.Add(CTextS1);
-            Controls.Add(ctLabel1);
+            Controls.Add(headerLabel);
             Controls.Add(label10);
             Controls.Add(CTextB1);
             Controls.Add(ctPictureBox1);
@@ -236,7 +236,7 @@
         private CTLabel CTextB1;
         private CTLabel label10;
         private CTPictureBox ctPictureBox1;
-        private CTLabel ctLabel1;
+        private CTLabel headerLabel;
         private CTLabel CTextS1;
         private CTLabel CTextS2;
         private CTLabel CTextB2;
