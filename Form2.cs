@@ -52,5 +52,19 @@ namespace ChusvSUTimetableWF
             hideWrongPasswordLabelTimer.Stop();
             hideWrongPasswordLabelTimer.Dispose();
         }
+
+        private void AgreementLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {UseShellExecute = true , FileName = "https://online.chuvsu.ru/doc/user_agreement" }
+            );
+        }
+
+        private void AgreementLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            { UseShellExecute = true, FileName = "https://online.chuvsu.ru/doc/privacy_policy" }
+            );
+        }
     }
 }
