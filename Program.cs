@@ -50,11 +50,11 @@ namespace ChusvSUTimetableWF
               new ContextMenuStrip();
             if (Settings.Instance.DebugMode)
                 _notifyIcon.ContextMenuStrip.Items.Add($"{TTApiManager.Instance.State}").Click += (s, e) => Quack();
-            _notifyIcon.ContextMenuStrip.Items.Add("Îòêðûòü îêíî").Click += (s, e) => ShowWindow(main);
-            _notifyIcon.ContextMenuStrip.Items.Add("Íàñòðîéêè").Click += (s, e) => ShowWindow(settings);
-            login = _notifyIcon.ContextMenuStrip.Items.Add("Âõîä â àêêàóíò");
+            _notifyIcon.ContextMenuStrip.Items.Add("ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾").Click += (s, e) => ShowWindow(main);
+            _notifyIcon.ContextMenuStrip.Items.Add("ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸").Click += (s, e) => ShowWindow(settings);
+            login = _notifyIcon.ContextMenuStrip.Items.Add("Ð’Ñ…Ð¾Ð´ Ð² Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚");
             login.Click += (s, e) => TTApiManager.Instance.LoginCallInput();
-            logout = _notifyIcon.ContextMenuStrip.Items.Add("Âûõîä èç àêêàóíòà");
+            logout = _notifyIcon.ContextMenuStrip.Items.Add("Ð’Ñ‹Ñ…Ð¾Ð´ Ð¸Ð· Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚Ð°");
             logout.Click += (s, e) => TTApiManager.Instance.Logout();
             _notifyIcon.ContextMenuStrip.Items.Add("Exit").Click += (s, e) => Application.Exit();
         }

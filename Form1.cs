@@ -32,14 +32,14 @@ namespace ChusvSUTimetableWF
         public static extern bool ReleaseCapture();
         public void SetFormTransparent()
         {
-            Opacity = ((double)Settings.Instance.Transparency)/100;//я не знаю, оно не работает без этого!
-            var style = GetWindowLong(Handle, GWL_EXSTYLE);//я никогда не писал настолько страшный код
+            Opacity = ((double)Settings.Instance.Transparency)/100;//СЏ РЅРµ Р·РЅР°СЋ, РѕРЅРѕ РЅРµ СЂР°Р±РѕС‚Р°РµС‚ Р±РµР· СЌС‚РѕРіРѕ!
+            var style = GetWindowLong(Handle, GWL_EXSTYLE);//СЏ РЅРёРєРѕРіРґР° РЅРµ РїРёСЃР°Р» РЅР°СЃС‚РѕР»СЊРєРѕ СЃС‚СЂР°С€РЅС‹Р№ РєРѕРґ
             if (!Settings.Instance.Draggable)
                 style |= WS_EX_TRANSPARENT;
             else style = ((style) & ~WS_EX_TRANSPARENT);
             SetWindowLong(Handle, GWL_EXSTYLE, style | WS_EX_LAYERED);
-            //WS_EX_LAYERED для прозрачности
-            //WS_EX_TRANSPARENT для кликабельности сквозь окно
+            //WS_EX_LAYERED РґР»СЏ РїСЂРѕР·СЂР°С‡РЅРѕСЃС‚Рё
+            //WS_EX_TRANSPARENT РґР»СЏ РєР»РёРєР°Р±РµР»СЊРЅРѕСЃС‚Рё СЃРєРІРѕР·СЊ РѕРєРЅРѕ
         }
 
         public void SetFormNormal()
@@ -71,7 +71,7 @@ namespace ChusvSUTimetableWF
         {
             MakeWin();
             updateTimer = new Timer();
-            updateTimer.Interval = 1000 * 5;//каждые 5 секунд
+            updateTimer.Interval = 1000 * 5;//РєР°Р¶РґС‹Рµ 5 СЃРµРєСѓРЅРґ
             updateTimer.Tick += UpdateTimer_Tick;
             updateTimer.Start();
             InitializeComponent();
@@ -87,7 +87,7 @@ namespace ChusvSUTimetableWF
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             TTApiManager.Instance.StateChanged += Instance_StateChanged; 
             var loginTimer = new Timer();
-            loginTimer.Interval = 1;//я знаю, я знаю, выглядит ужасно, но это работает. черная магия, никак иначе
+            loginTimer.Interval = 1;//СЏ Р·РЅР°СЋ, СЏ Р·РЅР°СЋ, РІС‹РіР»СЏРґРёС‚ СѓР¶Р°СЃРЅРѕ, РЅРѕ СЌС‚Рѕ СЂР°Р±РѕС‚Р°РµС‚. С‡РµСЂРЅР°СЏ РјР°РіРёСЏ, РЅРёРєР°Рє РёРЅР°С‡Рµ
             loginTimer.Tick += LoginTimer_Tick;
             loginTimer.Start();
             this.Location = new Point(Settings.Instance.X, Settings.Instance.Y);
@@ -118,7 +118,7 @@ namespace ChusvSUTimetableWF
             }
             var lab = 0;
             addText.Visible = false;
-            headerLabel.Text = $"Расписание на {TTApiManager.Instance.DayName}";
+            headerLabel.Text = $"Р Р°СЃРїРёСЃР°РЅРёРµ РЅР° {TTApiManager.Instance.DayName}";
             for (int i=0; i<9; i++)
             {
                 if (strings[i] != "-" && strings[i]!=null)
@@ -157,7 +157,7 @@ namespace ChusvSUTimetableWF
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            SetFormTransparent();//оно сбрасывает прозрачность почему-то, эта штука здесь нужна
+            SetFormTransparent();//РѕРЅРѕ СЃР±СЂР°СЃС‹РІР°РµС‚ РїСЂРѕР·СЂР°С‡РЅРѕСЃС‚СЊ РїРѕС‡РµРјСѓ-С‚Рѕ, СЌС‚Р° С€С‚СѓРєР° Р·РґРµСЃСЊ РЅСѓР¶РЅР°
         }
         protected override void OnLocationChanged(EventArgs e)
         {
