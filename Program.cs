@@ -48,7 +48,8 @@ namespace ChusvSUTimetableWF
         {
             _notifyIcon.ContextMenuStrip =
               new ContextMenuStrip();
-            _notifyIcon.ContextMenuStrip.Items.Add("Кря").Click += (s, e) => Quack();
+            if (Settings.Instance.DebugMode)
+                _notifyIcon.ContextMenuStrip.Items.Add($"{TTApiManager.Instance.State}").Click += (s, e) => Quack();
             _notifyIcon.ContextMenuStrip.Items.Add("Открыть окно").Click += (s, e) => ShowWindow(main);
             _notifyIcon.ContextMenuStrip.Items.Add("Настройки").Click += (s, e) => ShowWindow(settings);
             login = _notifyIcon.ContextMenuStrip.Items.Add("Вход в аккаунт");

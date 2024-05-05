@@ -33,6 +33,7 @@ namespace ChusvSUTimetableWF
                     group = jsonDocument.RootElement.GetProperty("Group").GetInt32();
                     transparency = jsonDocument.RootElement.GetProperty("Transparency").GetInt32();
                     draggable = jsonDocument.RootElement.GetProperty("Draggable").GetBoolean();
+                    debugMode = jsonDocument.RootElement.GetProperty("DebugMode").GetBoolean();
                 } catch (KeyNotFoundException ex) { //это нормально.
                     Logging.Log("JSON seems to be malformed:");
                     Logging.Log(ex);
@@ -54,6 +55,8 @@ namespace ChusvSUTimetableWF
         private int transparency = 100;
         public bool Draggable { get { return draggable; } set { draggable = value; } }
         private bool draggable = true;
+        public bool DebugMode { get { return debugMode; } set { debugMode = value; } }
+        private bool debugMode = false;
         public void Save()
         {
             File.WriteAllText(Path, JsonSerializer.Serialize(this));

@@ -30,7 +30,6 @@ namespace ChusvSUTimetableWF
             Settings.Instance.Transparency = transparencySlider.Value * 10;
             Settings.Instance.Draggable = checkBox1.Checked;
             Settings.Instance.Save();
-            Program.Quack();
         }
 
         private void Form3_Load(object sender, EventArgs e)
