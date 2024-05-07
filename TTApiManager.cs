@@ -19,7 +19,7 @@ namespace ChusvSUTimetableWF
                 _state = value;
                 StateChanged?.Invoke(value, strings, additionalData);
             } }
-        bool isToday = false;
+        bool isToday = true;
         public string DayName { get { if (lastUpdate == DateTime.MinValue) return "Загрузка..."; if (isToday) return $"сегодня, {WeekDayName}"; return $"завтра, {WeekDayName}"; } }
         public string WeekDayName { get { if (lastUpdate == DateTime.MinValue) return "...";
                 var forDate = DateTime.Now;
@@ -68,12 +68,22 @@ namespace ChusvSUTimetableWF
         }
         public void UpdateData()
         {
-            if (lastUpdate > DateTime.Now.AddMinutes(-30)) { State = State; return; }
+            //???
+            var forcedUpdate = false;
+            var las = lastUpdate.AddDays(1).ToUniversalTime().AddHours(3).AddMinutes(-10).Date;
+            var tom = DateTime.UtcNow.AddHours(3).Date;
+            if ( las < tom )
+            {
+                forcedUpdate = true;
+                isToday = true;
+            }
+            if (!(forcedUpdate))
+                if (lastUpdate > DateTime.Now.AddMinutes(-30)) { State = State; return; }
             for (int i = 0; i < 9; i++) strings[i] = "-";
             for (int i = 0; i < 9; i++) additionalData[i] = "-";
             using (var client = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, new Uri("https://online.chuvsu.ru/api/v2/schedule/tomorrow")))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, new Uri("https://online.chuvsu.ru/api/v2/schedule/"+(isToday?"today":"tomorrow"))))
                 {
                     try
                     {
@@ -86,6 +96,7 @@ namespace ChusvSUTimetableWF
                         File.WriteAllText(Path, json);
                         var g = JsonDocument.Parse(json, new JsonDocumentOptions { MaxDepth = 50 });
                         var itemsVK = g.RootElement.GetProperty("items");
+                        var switchToTomorrow = !isToday;
                         if (itemsVK.ToString()!="[]")
                         foreach (var itemVK in itemsVK.EnumerateObject())
                         {
@@ -94,11 +105,25 @@ namespace ChusvSUTimetableWF
                                 var sb = les.GetProperty("subgroup").GetInt32();
                                     if ((Settings.Instance.Group!=0) && (!((sb == 0) || (sb == Settings.Instance.Group)))) continue;
                                     //if (les.GetProperty("subgroup").GetInt32()<=1)
+                                    if (DateTime.Parse(les.GetProperty("end_time").GetString())>DateTime.UtcNow.AddHours(3))
+                                    {
+                                        switchToTomorrow = false;
+                                    }
                                     strings[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("discipline")}";
                                     additionalData[les.GetProperty("pair").GetInt32() - 1] = $"{les.GetProperty("start_time").GetString()} - {les.GetProperty("end_time").GetString()}   {les.GetProperty("cabinet").GetProperty("name").GetString()}   {les.GetProperty("type").GetProperty("short")}";
                             }
                         }
                         lastUpdate = DateTime.Now;
+                        if (switchToTomorrow)
+                        {
+                            var was = isToday;
+                            if (isToday)
+                            {
+                                isToday = false;
+                            }
+                            if (was!=isToday)
+                                UpdateData();
+                        }
                         State = "Nominal";
                     }
                     catch (Exception ex)
